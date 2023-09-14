@@ -274,11 +274,12 @@ static int SetAvailableVf(void) {
 }
 
 bool VmBuilderQemu::SetupSriov(void) {
-    std::string vgpu_mon_id = cfg_.GetValue(kGroupVgpu, kVgpuMonId);
-    if (vgpu_mon_id.empty()) {
-        emul_cmd_.append(" -display gtk,gl=on");
-    } else {
-        emul_cmd_.append(" -display gtk,gl=on,monitor=" + vgpu_mon_id);
+    std::string disp_op = cfg_.GetValue(kGroupDisplay, kDispOptions);
+    if (disp_op.empty()) {
+        std::string vgpu_mon_id = cfg_.GetValue(kGroupVgpu, kVgpuMonId);
+        if (!vgpu_mon_id.empty()) {
+            emul_cmd_.append(" -display gtk,gl=on,monitor=" + vgpu_mon_id);
+        }
     }
 
     std::string mem_size = cfg_.GetValue(kGroupMem, kMemSize);
