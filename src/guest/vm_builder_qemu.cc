@@ -274,8 +274,9 @@ static int SetAvailableVf(void) {
 }
 
 bool VmBuilderQemu::SetupSriov(void) {
+    bool main_gpu = cfg_.GetValue(kGroupVgpu, kVgpuVga).compare("true") == 0;
     std::string disp_op = cfg_.GetValue(kGroupDisplay, kDispOptions);
-    if (disp_op.empty()) {
+    if (disp_op.empty() && !main_gpu) {
         std::string vgpu_mon_id = cfg_.GetValue(kGroupVgpu, kVgpuMonId);
         if (!vgpu_mon_id.empty()) {
             emul_cmd_.append(" -display gtk,gl=on,monitor=" + vgpu_mon_id);
@@ -293,8 +294,16 @@ bool VmBuilderQemu::SetupSriov(void) {
     if (vf < 0)
         return false;
 
-    emul_cmd_.append(" -device virtio-vga,max_outputs=1,blob=true"
-                    " -device vfio-pci,host=0000:00:02." + std::to_string(vf) +
+    if (!main_gpu)
+        emul_cmd_.append(" -device virtio-vga,max_outputs=1,blob=true");
+
+    emul_cmd_.append(" -device vfio-pci,host=0000:00:02." + std::to_string(vf));
+    if (main_gpu) {
+        emul_cmd_.append(",x-vga=on");
+        if (cfg_.GetValue(kGroupVgpu, kVgpuMultifunction).compare("true") == 0)
+            emul_cmd_.append(",multifunction=on");
+    }
+    emul_cmd_.append(
                     " -object memory-backend-memfd,hugetlb=on,id=mem_sriov,size=" + mem_size +
                     " -machine memory-backend=mem_sriov");
 

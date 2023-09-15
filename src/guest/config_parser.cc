@@ -34,7 +34,7 @@ map<string_view, vector<string_view>> kConfigMap = {
     { kGroupVcpu,    { kVcpuNum } },
     { kGroupFirm,    { kFirmType, kFirmPath, kFirmCode, kFirmVars } },
     { kGroupDisk,    { kDiskSize, kDiskPath } },
-    { kGroupVgpu,    { kVgpuType, kVgpuGvtgVer, kVgpuUuid, kVgpuMonId, kVgpuOutputs } },
+    { kGroupVgpu,    { kVgpuType, kVgpuGvtgVer, kVgpuUuid, kVgpuMonId, kVgpuOutputs, kVgpuVga, kVgpuMultifunction } },
     { kGroupDisplay, { kDispOptions } },
     { kGroupNet,     { kNetModel, kNetAdbPort, kNetFastbootPort } },
     { kGroupVtpm,    { kVtpmBinPath, kVtpmDataDir } },

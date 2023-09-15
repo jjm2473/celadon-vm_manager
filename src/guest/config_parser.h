@@ -59,6 +59,8 @@ constexpr char kVgpuGvtgVer[] = "gvtg_version";
 constexpr char kVgpuUuid[]    = "vgpu_uuid";
 constexpr char kVgpuMonId[]    = "monitor";
 constexpr char kVgpuOutputs[]    = "outputs";
+constexpr char kVgpuVga[]     = "vga";
+constexpr char kVgpuMultifunction[]  = "multifunction";
 
 constexpr char kDispOptions[] = "options";
 
